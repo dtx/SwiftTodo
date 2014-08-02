@@ -56,13 +56,30 @@ import UIKit
         return cell
     }
     
+    func removeItem(index: Int) {
+        self.toDoItems.removeObjectAtIndex(index)
+    }
+    
+    override func tableView(tableView: UITableView!, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath!) {
+        if editingStyle == .Delete{
+            self.toDoItems.removeObjectAtIndex(indexPath.row)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+        }
+        //delete it from data store
+        tableView.reloadData()
+    }
+    
+    override func tableView(tableView: UITableView!, canEditRowAtIndexPath indexPath: NSIndexPath!) -> Bool {
+        return true
+    }
+    
     override func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
-        
+    
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
         var tappedItem: ToDoItem = self.toDoItems.objectAtIndex(indexPath.row) as ToDoItem
         tappedItem.completed = !tappedItem.completed
         tableView.reloadData()
-        
+    
     }
 }
 
